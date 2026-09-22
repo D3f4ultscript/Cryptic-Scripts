@@ -10956,9 +10956,14 @@ function Library:CreateWindow(WindowInfo)
             Size = UDim2.new(TitleWidthScale, 0, 1, 0),
             Text = WindowInfo.Title,
             TextSize = 20,
+            TextScaled = true,
             TextXAlignment = Enum.TextXAlignment.Left,
-            TextTruncate = Enum.TextTruncate.AtEnd,
             Parent = TitleHolder,
+        })
+        New("UITextSizeConstraint", {
+            MaxTextSize = 20,
+            MinTextSize = 8,
+            Parent = WindowTitle,
         })
 
         --// Top Right Bar \\--
