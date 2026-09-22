@@ -14165,9 +14165,9 @@ function Library:CreateWindow(WindowInfo)
         })
 
         CreditsSubTab:AddButton({
-            Text = "Copy Tiktok Link",
+            Text = "Copy Scriptblox Link",
             Func = function()
-                copyInfoLink("Tiktok link", "https://www.tiktok.com/@riftservice0")
+                copyInfoLink("Scriptblox link", "https://scriptblox.com/u/Project_Cryptic")
             end,
         })
 
@@ -14199,6 +14199,31 @@ function Library:CreateWindow(WindowInfo)
             end
         end)
 
+        local GameSubTab = InfoTabbox:AddTab("Game", "gamepad-2")
+
+        local GameName = "Unknown Game"
+        pcall(function()
+            GameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+        end)
+
+        GameSubTab:AddDivider(GameName)
+
+        local PlayerCountLabel = GameSubTab:AddLabel(
+            "Players: " .. #Players:GetPlayers() .. "/" .. Players.MaxPlayers
+        )
+        GameSubTab:AddLabel("Place ID: " .. tostring(game.PlaceId))
+        GameSubTab:AddLabel("Job ID: " .. tostring(game.JobId))
+
+        task.spawn(function()
+            while task.wait(3) do
+                if Library.Unloaded then
+                    break
+                end
+
+                PlayerCountLabel:SetText("Players: " .. #Players:GetPlayers() .. "/" .. Players.MaxPlayers)
+            end
+        end)
+
         Window.InfoTab = InfoTab
     end
 
@@ -14226,14 +14251,6 @@ function Library:CreateWindow(WindowInfo)
                 Default = Library.ShowCustomCursor,
                 Callback = function(value)
                     Library.ShowCustomCursor = value
-                end,
-            })
-
-            UtilityGroupBox:AddToggle("AlwaysOnTop", {
-                Text = "Always On Top",
-                Default = Window.AlwaysOnTop,
-                Callback = function(value)
-                    Window:SetAlwaysOnTop(value)
                 end,
             })
 
