@@ -31,7 +31,7 @@ local Toggles = {}
 local Options = {}
 local Tooltips = {}
 
-local BaseURL = "https://raw.githubusercontent.com/deividcomsono/Obsidian/refs/heads/main/"
+local BaseURL = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Obsidian_UI/"
 local CustomImageManager = {}
 local CustomImageManagerAssets = {
     TransparencyTexture = {
@@ -14133,16 +14133,12 @@ function Library:CreateWindow(WindowInfo)
         })
 
         local CreditsSubTab = InfoTabbox:AddTab("Credits", "sparkles")
-        local CreditsBox = CreditsSubTab:AddGroupbox({
-            Side = "Left",
-            Name = "Credits",
-        })
 
-        CreditsBox:AddDivider("Developer")
-        CreditsBox:AddLabel("Owner: D3f4ult")
-        CreditsBox:AddLabel("Head-Developer: D3f4ult")
+        CreditsSubTab:AddDivider("Developer")
+        CreditsSubTab:AddLabel("Owner: D3f4ult")
+        CreditsSubTab:AddLabel("Head-Developer: D3f4ult")
 
-        CreditsBox:AddDivider("Links")
+        CreditsSubTab:AddDivider("Links")
 
         local function copyInfoLink(name, url)
             if setclipboard then
@@ -14161,14 +14157,14 @@ function Library:CreateWindow(WindowInfo)
             end
         end
 
-        CreditsBox:AddButton({
+        CreditsSubTab:AddButton({
             Text = "Copy Discord Link",
             Func = function()
                 copyInfoLink("Discord link", "https://discord.gg/XDpsSW7Ybs")
             end,
         })
 
-        CreditsBox:AddButton({
+        CreditsSubTab:AddButton({
             Text = "Copy Tiktok Link",
             Func = function()
                 copyInfoLink("Tiktok link", "https://www.tiktok.com/@riftservice0")
@@ -14176,21 +14172,17 @@ function Library:CreateWindow(WindowInfo)
         })
 
         local PlayerSubTab = InfoTabbox:AddTab("Player", "user")
-        local PlayerBox = PlayerSubTab:AddGroupbox({
-            Side = "Left",
-            Name = "Player",
-        })
 
-        PlayerBox:AddDivider("Account")
-        PlayerBox:AddLabel("Display Name: " .. (Library.LocalPlayer and Library.LocalPlayer.DisplayName or "Unknown"))
-        PlayerBox:AddLabel("Username: " .. (Library.LocalPlayer and Library.LocalPlayer.Name or "Unknown"))
-        PlayerBox:AddLabel("Account Age: " .. (Library.LocalPlayer and tostring(Library.LocalPlayer.AccountAge) or "0") .. " days")
-        PlayerBox:AddLabel("User ID: " .. (Library.LocalPlayer and tostring(Library.LocalPlayer.UserId) or "0"))
+        PlayerSubTab:AddDivider("Account")
+        PlayerSubTab:AddLabel("Display Name: " .. (Library.LocalPlayer and Library.LocalPlayer.DisplayName or "Unknown"))
+        PlayerSubTab:AddLabel("Username: " .. (Library.LocalPlayer and Library.LocalPlayer.Name or "Unknown"))
+        PlayerSubTab:AddLabel("Account Age: " .. (Library.LocalPlayer and tostring(Library.LocalPlayer.AccountAge) or "0") .. " days")
+        PlayerSubTab:AddLabel("User ID: " .. (Library.LocalPlayer and tostring(Library.LocalPlayer.UserId) or "0"))
 
-        PlayerBox:AddDivider("Script")
-        PlayerBox:AddLabel("Executor: " .. (identifyexecutor and identifyexecutor() or "Unknown"))
+        PlayerSubTab:AddDivider("Script")
+        PlayerSubTab:AddLabel("Executor: " .. (identifyexecutor and identifyexecutor() or "Unknown"))
 
-        local UptimeLabel = PlayerBox:AddLabel("Script Uptime: 00:00:00")
+        local UptimeLabel = PlayerSubTab:AddLabel("Script Uptime: 00:00:00")
 
         local StartTime = os.time()
         task.spawn(function()
