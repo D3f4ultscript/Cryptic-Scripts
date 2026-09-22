@@ -13980,9 +13980,82 @@ function Library:CreateWindow(WindowInfo)
     end
 
     if Library.IsMobile then
-        local ToggleButton = Library:AddDraggableButton("Toggle", function()
+        local MobileToggleHeight = 36
+        local MobileToggleHandleWidth = 30
+        local MobileToggleLabelWidth = 60
+
+        local MobileToggleButton = New("Frame", {
+            BackgroundColor3 = "BackgroundColor",
+            Size = UDim2.fromOffset(MobileToggleHandleWidth + MobileToggleLabelWidth, MobileToggleHeight),
+            Position = UDim2.fromOffset(12, 40),
+            ZIndex = 1,
+            Parent = Floats,
+        })
+        table.insert(
+            Library.Corners,
+            New("UICorner", {
+                CornerRadius = UDim.new(0, Library.CornerRadius),
+                Parent = MobileToggleButton,
+            })
+        )
+        table.insert(
+            Library.Scales,
+            New("UIScale", {
+                Parent = MobileToggleButton,
+            })
+        )
+        Library:AddOutline(MobileToggleButton)
+
+        local MobileToggleHandle = New("Frame", {
+            BackgroundColor3 = "AccentColor",
+            BackgroundTransparency = 0.75,
+            Size = UDim2.new(0, MobileToggleHandleWidth, 1, 0),
+            Parent = MobileToggleButton,
+        })
+        table.insert(
+            Library.Corners,
+            New("UICorner", {
+                CornerRadius = UDim.new(0, Library.CornerRadius),
+                Parent = MobileToggleHandle,
+            })
+        )
+
+        local MobileToggleHandleIcon = New("ImageLabel", {
+            BackgroundTransparency = 1,
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            Position = UDim2.fromScale(0.5, 0.5),
+            Size = UDim2.fromOffset(16, 16),
+            ImageColor3 = "FontColor",
+            Parent = MobileToggleHandle,
+        })
+        local MobileToggleGripIcon = Library:GetCustomIcon("grip-vertical")
+        if MobileToggleGripIcon then
+            Library:ApplyLucideIcon(MobileToggleHandleIcon, MobileToggleGripIcon)
+        end
+
+        local MobileToggleLabel = New("TextButton", {
+            BackgroundTransparency = 1,
+            Position = UDim2.fromOffset(MobileToggleHandleWidth, 0),
+            Size = UDim2.new(1, -MobileToggleHandleWidth, 1, 0),
+            Text = MainFrame.Visible and "Close" or "Open",
+            TextSize = 14,
+            Parent = MobileToggleButton,
+        })
+
+        Library:MakeDraggable(MobileToggleButton, MobileToggleHandle, true)
+
+        if not table.find(Library.DraggableElements, MobileToggleButton) then
+            table.insert(Library.DraggableElements, MobileToggleButton)
+        end
+        PositionDraggable(MobileToggleButton, MobileToggleButton.Position)
+
+        MobileToggleLabel.Activated:Connect(function()
             Library:Toggle()
-        end, true, true)
+        end)
+
+        MainFrame:GetPropertyChangedSignal("Visible"):Connect(function()
+            MobileToggleLabel.Text = MainFrame.Visible and "Close" or "Open"
+        end)
 
         local LockButton = Library:AddDraggableButton("Lock", function(self)
             Library.CantDragForced = not Library.CantDragForced
@@ -13990,21 +14063,21 @@ function Library:CreateWindow(WindowInfo)
         end, true, true)
 
         if WindowInfo.MobileButtonsSide == "Right" then
-            ToggleButton.Button.AnchorPoint = Vector2.new(1, 0)
-            ToggleButton.Button.Position = UDim2.new(1, -6, 0, 6)
+            MobileToggleButton.AnchorPoint = Vector2.new(1, 0)
+            MobileToggleButton.Position = UDim2.new(1, -12, 0, 40)
 
             LockButton.Button.AnchorPoint = Vector2.new(1, 0)
-            LockButton.Button.Position = UDim2.new(1, -(ToggleButton.Button.Size.X.Offset + 12), 0, 6)
+            LockButton.Button.Position = UDim2.new(1, -(MobileToggleButton.Size.X.Offset + 18), 0, 40)
         else
-            ToggleButton.Button.AnchorPoint = Vector2.new(0, 0)
-            ToggleButton.Button.Position = UDim2.fromOffset(6, 6)
+            MobileToggleButton.AnchorPoint = Vector2.new(0, 0)
+            MobileToggleButton.Position = UDim2.fromOffset(12, 40)
 
             LockButton.Button.AnchorPoint = Vector2.new(0, 0)
-            LockButton.Button.Position = UDim2.fromOffset(ToggleButton.Button.Size.X.Offset + 12, 6)
+            LockButton.Button.Position = UDim2.fromOffset(MobileToggleButton.Size.X.Offset + 18, 40)
         end
 
         if WindowInfo.ShowMobileButtons == false then
-            ToggleButton.Button.Visible = false
+            MobileToggleButton.Visible = false
             LockButton.Button.Visible = false
         end
     end
