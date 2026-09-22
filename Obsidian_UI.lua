@@ -13979,7 +13979,7 @@ function Library:CreateWindow(WindowInfo)
         task.spawn(Library.Toggle)
     end
 
-    if Library.IsMobile then
+    do
         local MobileToggleHeight = 36
         local MobileToggleHandleWidth = 30
         local MobileToggleLabelWidth = 60
