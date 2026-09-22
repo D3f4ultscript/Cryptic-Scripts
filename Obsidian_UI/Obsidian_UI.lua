@@ -6223,19 +6223,25 @@ do
         })
 
         if Text then
+            local MaxLabelWidth = (Container.AbsoluteSize.X / Library.DPIScale) - 40
             local TextLabel = New("TextLabel", {
-                AutomaticSize = Enum.AutomaticSize.X,
                 BackgroundTransparency = 1,
-                Size = UDim2.fromScale(1, 0),
+                Size = UDim2.new(1, -40, 0, 16),
                 Text = Text,
                 TextSize = 14,
+                TextScaled = true,
                 TextTransparency = 0.5,
                 TextXAlignment = Enum.TextXAlignment.Center,
                 Parent = InnerHolder,
             })
+            New("UITextSizeConstraint", {
+                MaxTextSize = 14,
+                MinTextSize = 8,
+                Parent = TextLabel,
+            })
 
-            local X, _ = Library:GetTextBounds(Text, TextLabel.FontFace, TextLabel.TextSize, TextLabel.AbsoluteSize.X / Library.DPIScale)
-            local SizeX = X // 2 + 10
+            local X, _ = Library:GetTextBounds(Text, TextLabel.FontFace, 14, MaxLabelWidth > 0 and MaxLabelWidth or 1)
+            local SizeX = math.min(X // 2 + 10, 0.5 * (Container.AbsoluteSize.X / Library.DPIScale) - 4)
 
             New("Frame", {
                 AnchorPoint = Vector2.new(0, 0.5),
@@ -6408,6 +6414,13 @@ do
                 Groupbox:Resize()
             end))
         else
+            TextLabel.TextScaled = true
+            New("UITextSizeConstraint", {
+                MaxTextSize = Data.Size,
+                MinTextSize = 8,
+                Parent = TextLabel,
+            })
+
             New("UIListLayout", {
                 FillDirection = Enum.FillDirection.Horizontal,
                 HorizontalAlignment = Enum.HorizontalAlignment.Right,
@@ -14206,7 +14219,8 @@ function Library:CreateWindow(WindowInfo)
             GameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
         end)
 
-        GameSubTab:AddDivider(GameName)
+        GameSubTab:AddDivider("Game")
+        GameSubTab:AddLabel("Name: " .. GameName)
 
         local PlayerCountLabel = GameSubTab:AddLabel(
             "Players: " .. #Players:GetPlayers() .. "/" .. Players.MaxPlayers
