@@ -1,11 +1,11 @@
 return {
-    [4019583467] = "https://cryptic-bpg.pages.dev/api/raw?file=Npc.lua",
-    [10415845204] = "https://cryptic-bpg.pages.dev/api/raw?file=ClickerSimulator.lua",
-    [9582986239] = "https://cryptic-bpg.pages.dev/api/raw?file=FishanAnimeRNG.lua",
-    [8856451375] = "https://cryptic-bpg.pages.dev/api/raw?file=Fluxo.lua",
-    [10759860151] = "https://cryptic-bpg.pages.dev/api/raw?file=LiftaCube.lua",
-    [10390082880] = "https://cryptic-bpg.pages.dev/api/raw?file=OneShot.lua",
-    [354554209] = "https://cryptic-bpg.pages.dev/api/raw?file=SkyWars.lua",
-    [10563114921] = "https://cryptic-bpg.pages.dev/api/raw?file=StealanEgg.lua",
-    [10765203500] = "https://cryptic-bpg.pages.dev/api/raw?file=LarpingLegends.lua"
+    [4019583467] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/NPC_or_Die.lua",
+    [10415845204] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/Clicker_Simulator.lua",
+    [9582986239] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/Fish_an_Anime_RNG.lua",
+    [8856451375] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/Fluxo_PvP.lua",
+    [10759860151] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/Lift_a_Cube.lua",
+    [10390082880] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/One_Shot.lua",
+    [354554209] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/SkyWars.lua",
+    [10563114921] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/Steal_an_Egg.lua",
+    [10765203500] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/Larping_Legends_2.lua"
 }
