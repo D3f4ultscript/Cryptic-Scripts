@@ -1,3 +1,3 @@
 return {
-    [10415845204] = "https://cryptic-bpg.pages.dev/api/raw?file=ClickerSimulator-OneClick.lua"
+    [10415845204] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts_OneClick/Clicker_Simulator_OneClick.lua"
 }
