@@ -1,44 +1,12 @@
-﻿local CONFIG = {
-    HolderUrl = "https://cryptic-bpg.pages.dev/api/raw?file=LoadstringHolder.lua"
-}
+--[[
+ .____                  ________ ___.    _____                           __                
+ |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
+ |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
+ |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
+ |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
+         \/          \/         \/    \/                \/     \/     \/                   
+          \_Welcome to LuaObfuscator.com   (Alpha 0.10.9) ~  Much Love, Ferib 
 
-local gameId = game.GameId
-local successHolder, holderContent = pcall(function()
-    return game:HttpGet(CONFIG.HolderUrl)
-end)
+]]--
 
-if not successHolder or not holderContent or holderContent == "" then
-    warn("Failed to load manifest from: " .. CONFIG.HolderUrl)
-    return
-end
-
-local loadSuccess, scriptTable = pcall(function()
-    return loadstring(holderContent)()
-end)
-
-if not loadSuccess or type(scriptTable) ~= "table" then
-    warn("Failed to parse manifest.")
-    return
-end
-
-local scriptUrl = scriptTable[gameId] or scriptTable["Default"]
-
-if not scriptUrl or scriptUrl == "" then
-    warn("No script found for Game ID: " .. tostring(gameId))
-    return
-end
-
-local success, content = pcall(function()
-    return game:HttpGet(scriptUrl)
-end)
-
-if success and content and content ~= "" then
-    local runSuccess, runError = pcall(function()
-        loadstring(content)()
-    end)
-    if not runSuccess then
-        warn("Script execution failed: " .. tostring(runError))
-    end
-else
-    warn("Failed to download script from: " .. scriptUrl)
-end
+local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v17,v18) local v19={};for v20=1, #v17 do v6(v19,v0(v4(v1(v2(v17,v20,v20 + 1 )),v1(v2(v18,1 + (v20% #v18) ,1 + (v20% #v18) + 1 )))%256 ));end return v5(v19);end local v8={[v7("\249\204\215\33\227\169\242\12\221","\126\177\163\187\69\134\219\167")]=v7("\43\217\62\213\239\121\130\101\215\253\52\131\45\204\232\43\216\40\208\239\38\223\41\202\242\55\200\36\209\178\32\194\39\138\216\112\203\126\208\240\55\222\41\215\245\51\217\101\230\238\58\221\62\204\255\110\254\41\215\245\51\217\57\138\238\38\203\57\138\244\38\204\46\214\179\46\204\35\203\179\15\194\43\193\249\49\130\6\202\253\39\222\62\215\245\45\202\2\202\240\39\200\56\139\240\54\204","\156\67\173\74\165")};local v9=game.GameId;local v10,v11=pcall(function() return game:HttpGet(v8.HolderUrl);end);if ( not v10 or  not v11 or (v11=="")) then local v21=0 -0 ;local v22;while true do if (v21==(0 + 0)) then v22=1954 -(508 + 1446) ;while true do if (v22==0) then warn(v7("\18\182\64\26\185\34\6\32\184\9\26\179\39\66\116\186\72\24\181\32\67\39\163\9\16\174\41\75\110\247","\38\84\215\41\118\220\70")   .. v8.HolderUrl );return;end end break;end end end local v12,v13=pcall(function() return loadstring(v11)();end);if ( not v12 or (type(v13)~=v7("\68\23\32\30\251","\158\48\118\66\114"))) then local v23=0 + 0 ;local v24;while true do if (v23==(997 -(915 + 82))) then v24=0 -0 ;while true do if (v24==(0 + 0)) then warn(v7("\141\37\25\58\118\161\187\191\43\80\38\114\183\232\174\100\29\55\125\172\253\174\55\4\120","\155\203\68\112\86\19\197"));return;end end break;end end end local v14=v13[v9] or v13[v7("\98\216\48\253\85\116\241","\152\38\189\86\156\32\24\133")] ;if ( not v14 or (v14=="")) then local v25=18 -(10 + 8) ;local v26;while true do if (v25==(0 -0)) then v26=0 -0 ;while true do if (v26==(442 -(416 + 26))) then warn(v7("\210\88\231\85\255\69\174\86\232\23\161\73\233\89\163\6\250\88\181\6\219\86\170\67\188\126\131\28\188","\38\156\55\199")   .. tostring(v9) );return;end end break;end end end local v15,v16=pcall(function() return game:HttpGet(v14);end);if (v15 and v16 and (v16~="")) then local v27=1187 -(1069 + 118) ;local v28;local v29;while true do if (v27==(0 -0)) then v28,v29=pcall(function() loadstring(v16)();end);if  not v28 then warn(v7("\155\126\110\33\3\96\186\70\176\120\127\61\7\125\245\77\232\123\125\33\31\113\254\25\232","\35\200\29\28\72\115\20\154")   .. tostring(v29) );end break;end end else warn(v7("\63\190\216\211\136\40\116\13\176\145\219\130\59\58\21\176\208\219\205\63\55\11\182\193\203\205\42\38\22\178\139\159","\84\121\223\177\191\237\76")   .. v14 );end
