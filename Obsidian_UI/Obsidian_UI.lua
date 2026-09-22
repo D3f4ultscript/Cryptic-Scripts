@@ -1,3 +1,5 @@
+local OBSIDIAN_UI_REPO = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Obsidian_UI/"
+
 local cloneref = (cloneref or clonereference or function(instance: any)
     return instance
 end)
@@ -14120,6 +14122,68 @@ function Library:CreateWindow(WindowInfo)
 
     Window.MainFrame = MainFrame
     Library.Window = Window
+
+    if WindowInfo.DisableUISettingsTab ~= true then
+        task.spawn(function()
+            local SaveManagerOk, SaveManager = pcall(function()
+                return loadstring(game:HttpGet(OBSIDIAN_UI_REPO .. "addons/SaveManager.lua"))()
+            end)
+
+            local ThemeManagerOk, ThemeManager = pcall(function()
+                return loadstring(game:HttpGet(OBSIDIAN_UI_REPO .. "addons/ThemeManager.lua"))()
+            end)
+
+            local SettingsFolder = WindowInfo.Folder or "ObsidianUI"
+            local UISettingsTab = Window:AddTab("UI Settings", "settings")
+
+            if ThemeManagerOk and ThemeManager then
+                ThemeManager:SetLibrary(Library)
+                ThemeManager:SetFolder(SettingsFolder)
+                ThemeManager:ApplyToTab(UISettingsTab)
+                ThemeManager:LoadDefault()
+
+                local ThemeInfoBox = UISettingsTab:AddGroupbox({
+                    Side = "Left",
+                    Name = "Theme Info",
+                    IconName = "info",
+                })
+
+                ThemeInfoBox:AddLabel({
+                    Text = "Import Theme (JSON): paste a theme JSON string into the import box and confirm to apply it instantly.",
+                    DoesWrap = true,
+                })
+
+                ThemeInfoBox:AddLabel({
+                    Text = "Custom Themes: pick your own colors in the custom theme section and they apply live, use Export to save the JSON for later.",
+                    DoesWrap = true,
+                })
+            end
+
+            if SaveManagerOk and SaveManager then
+                SaveManager:SetLibrary(Library)
+                SaveManager:IgnoreThemeSettings()
+                SaveManager:SetIgnoreIndexes(WindowInfo.ConfigIgnoreIndexes or {})
+                SaveManager:SetFolder(SettingsFolder .. "/configs")
+                SaveManager:BuildConfigSection(UISettingsTab)
+                SaveManager:LoadAutoloadConfig()
+
+                local ConfigInfoBox = UISettingsTab:AddGroupbox({
+                    Side = "Right",
+                    Name = "Config Info",
+                    IconName = "info",
+                })
+
+                ConfigInfoBox:AddLabel({
+                    Text = "Configs: type a name, Create to save your current settings, Load to apply a saved config, and Set as Autoload to load it automatically next time.",
+                    DoesWrap = true,
+                })
+            end
+
+            Window.UISettingsTab = UISettingsTab
+            Library.SaveManager = SaveManagerOk and SaveManager or nil
+            Library.ThemeManager = ThemeManagerOk and ThemeManager or nil
+        end)
+    end
 
     return Window
 end
