@@ -14070,6 +14070,8 @@ function Library:CreateWindow(WindowInfo)
         if WindowInfo.ShowMobileButtons == false then
             MobileToggleButton.Visible = false
         end
+
+        Window.MobileToggleButton = MobileToggleButton
     end
 
     --// Execution \\--
@@ -14123,6 +14125,91 @@ function Library:CreateWindow(WindowInfo)
     Window.MainFrame = MainFrame
     Library.Window = Window
 
+    if WindowInfo.DisableInfoTab ~= true then
+        local InfoTab = Window:AddTab("Info", "info")
+        local InfoTabbox = InfoTab:AddTabbox({
+            Side = "Left",
+            Name = "Info",
+        })
+
+        local CreditsSubTab = InfoTabbox:AddTab("Credits", "sparkles")
+        local CreditsBox = CreditsSubTab:AddGroupbox({
+            Side = "Left",
+            Name = "Credits",
+        })
+
+        CreditsBox:AddDivider("Developer")
+        CreditsBox:AddLabel("Owner: D3f4ult")
+        CreditsBox:AddLabel("Head-Developer: D3f4ult")
+
+        CreditsBox:AddDivider("Links")
+
+        local function copyInfoLink(name, url)
+            if setclipboard then
+                setclipboard(url)
+                Library:Notify({
+                    Title = "Credits",
+                    Description = name .. " copied to clipboard",
+                    Time = 5,
+                })
+            else
+                Library:Notify({
+                    Title = "Credits",
+                    Description = "Clipboard API not available",
+                    Time = 5,
+                })
+            end
+        end
+
+        CreditsBox:AddButton({
+            Text = "Copy Discord Link",
+            Func = function()
+                copyInfoLink("Discord link", "https://discord.gg/XDpsSW7Ybs")
+            end,
+        })
+
+        CreditsBox:AddButton({
+            Text = "Copy Tiktok Link",
+            Func = function()
+                copyInfoLink("Tiktok link", "https://www.tiktok.com/@riftservice0")
+            end,
+        })
+
+        local PlayerSubTab = InfoTabbox:AddTab("Player", "user")
+        local PlayerBox = PlayerSubTab:AddGroupbox({
+            Side = "Left",
+            Name = "Player",
+        })
+
+        PlayerBox:AddDivider("Account")
+        PlayerBox:AddLabel("Display Name: " .. (Library.LocalPlayer and Library.LocalPlayer.DisplayName or "Unknown"))
+        PlayerBox:AddLabel("Username: " .. (Library.LocalPlayer and Library.LocalPlayer.Name or "Unknown"))
+        PlayerBox:AddLabel("Account Age: " .. (Library.LocalPlayer and tostring(Library.LocalPlayer.AccountAge) or "0") .. " days")
+        PlayerBox:AddLabel("User ID: " .. (Library.LocalPlayer and tostring(Library.LocalPlayer.UserId) or "0"))
+
+        PlayerBox:AddDivider("Script")
+        PlayerBox:AddLabel("Executor: " .. (identifyexecutor and identifyexecutor() or "Unknown"))
+
+        local UptimeLabel = PlayerBox:AddLabel("Script Uptime: 00:00:00")
+
+        local StartTime = os.time()
+        task.spawn(function()
+            while task.wait(1) do
+                if Library.Unloaded then
+                    break
+                end
+
+                local Diff = os.time() - StartTime
+                local Hours = math.floor(Diff / 3600)
+                local Minutes = math.floor((Diff % 3600) / 60)
+                local Seconds = Diff % 60
+                UptimeLabel:SetText(string.format("Script Uptime: %02d:%02d:%02d", Hours, Minutes, Seconds))
+            end
+        end)
+
+        Window.InfoTab = InfoTab
+    end
+
     if WindowInfo.DisableUISettingsTab ~= true then
         task.spawn(function()
             local SaveManagerOk, SaveManager = pcall(function()
@@ -14135,6 +14222,78 @@ function Library:CreateWindow(WindowInfo)
 
             local SettingsFolder = WindowInfo.Folder or "ObsidianUI"
             local UISettingsTab = Window:AddTab("UI Settings", "settings")
+
+            local UtilityGroupBox = UISettingsTab:AddGroupbox({
+                Side = "Left",
+                Name = "Utility",
+                IconName = "wrench",
+            })
+
+            UtilityGroupBox:AddToggle("ShowCustomCursor", {
+                Text = "Show Custom Cursor",
+                Default = Library.ShowCustomCursor,
+                Callback = function(value)
+                    Library.ShowCustomCursor = value
+                end,
+            })
+
+            UtilityGroupBox:AddToggle("AlwaysOnTop", {
+                Text = "Always On Top",
+                Default = Window.AlwaysOnTop,
+                Callback = function(value)
+                    Window:SetAlwaysOnTop(value)
+                end,
+            })
+
+            UtilityGroupBox:AddDropdown("NotifySideDropdown", {
+                Text = "Notification Side",
+                Values = { "Left", "Right" },
+                Default = WindowInfo.NotifySide or "Right",
+                Callback = function(value)
+                    Library:SetNotifySide(value)
+                end,
+            })
+
+            UtilityGroupBox:AddDropdown("DPIScaleDropdown", {
+                Text = "DPI Scale",
+                Values = { "50%", "75%", "100%", "125%", "150%", "175%", "200%" },
+                Default = "100%",
+                Callback = function(value)
+                    local dpi = tonumber((value:gsub("%%", "")))
+                    Library:SetDPIScale(dpi)
+                end,
+            })
+
+            UtilityGroupBox:AddSlider("CornerRadiusSlider", {
+                Text = "Corner Radius",
+                Default = Library.CornerRadius,
+                Min = 0,
+                Max = 20,
+                Rounding = 0,
+                Callback = function(value)
+                    Window:SetCornerRadius(value)
+                end,
+            })
+
+            if Window.MobileToggleButton then
+                UtilityGroupBox:AddToggle("ShowToggleButton", {
+                    Text = "Show Open/Close Button",
+                    Tooltip = "Lets PC users hide the draggable Open/Close button",
+                    Default = true,
+                    Callback = function(value)
+                        Window.MobileToggleButton.Visible = value
+                    end,
+                })
+            end
+
+            UtilityGroupBox:AddButton({
+                Text = "Unload UI",
+                Risky = true,
+                DoubleClick = true,
+                Func = function()
+                    Library:Unload()
+                end,
+            })
 
             if ThemeManagerOk and ThemeManager then
                 ThemeManager:SetLibrary(Library)
