@@ -549,6 +549,7 @@ local Templates = {
         MaxVisibleDropdownItems = 8,
         KeepDisabledValuePosition = false,
         SelectAllButtons = false,
+        RefreshValues = nil,
 
         Callback = function() end,
         Changed = function() end,
@@ -3871,6 +3872,7 @@ Library:GiveSignal(UserInputService.InputBegan:Connect(function(Input: InputObje
             and not (
                 Library:MouseIsOverFrame(CurrentMenu.Menu, Location)
                 or Library:MouseIsOverFrame(CurrentMenu.Holder, Location)
+                or (CurrentMenu.SelectAllBar and Library:MouseIsOverFrame(CurrentMenu.SelectAllBar, Location))
             )
         then
             CurrentMenu:Close()
@@ -8469,6 +8471,7 @@ do
             "Dropdown"
         )
         Dropdown.Menu = MenuTable
+        MenuTable.SelectAllBar = SelectAllBar
 
         local ItemHeight = 21
         local PoolSize = math.max(1, Info.MaxVisibleDropdownItems + 2)
@@ -9320,6 +9323,22 @@ do
         Dropdown:BuildDropdownList()
         Groupbox:Resize()
 
+        local RefreshButton = Groupbox:AddButton({
+            Text = "Refresh Dropdown",
+            Func = function()
+                local NewValues = Dropdown.Values
+
+                if typeof(Info.RefreshValues) == "function" then
+                    local Success, Result = pcall(Info.RefreshValues)
+                    if Success and Result ~= nil then
+                        NewValues = Result
+                    end
+                end
+
+                Dropdown:SetValues(NewValues)
+            end,
+        })
+
         Dropdown.Holder = Holder
         table.insert(Groupbox.Elements, Dropdown)
 
@@ -9349,6 +9368,10 @@ do
 
             if SelectAllBar then
                 SelectAllBar:Destroy()
+            end
+
+            if RefreshButton then
+                RefreshButton:Destroy()
             end
 
             if Holder then
@@ -14352,7 +14375,10 @@ function Library:CreateWindow(WindowInfo)
             "Players: " .. #Players:GetPlayers() .. "/" .. Players.MaxPlayers
         )
         GameSubTab:AddLabel("Place ID: " .. tostring(game.PlaceId))
-        GameSubTab:AddLabel("Job ID: " .. tostring(game.JobId))
+        GameSubTab:AddLabel({
+            Text = "Job ID: " .. tostring(game.JobId),
+            DoesWrap = true,
+        })
 
         task.spawn(function()
             while task.wait(3) do
