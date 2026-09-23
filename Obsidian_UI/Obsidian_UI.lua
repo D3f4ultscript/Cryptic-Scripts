@@ -548,6 +548,7 @@ local Templates = {
         DragSelect = false,
         MaxVisibleDropdownItems = 8,
         KeepDisabledValuePosition = false,
+        SelectAllButtons = false,
 
         Callback = function() end,
         Changed = function() end,
@@ -8153,6 +8154,7 @@ do
             Multi = Info.Multi,
             DragSelect = Info.Multi and not Library.IsMobile and Info.DragSelect == true,
             KeepDisabledValuePosition = Info.KeepDisabledValuePosition == true,
+            SelectAllButtons = Info.Multi and Info.SelectAllButtons == true,
 
             SpecialType = Info.SpecialType,
             ExcludeLocalPlayer = Info.ExcludeLocalPlayer,
@@ -8315,6 +8317,100 @@ do
             return ValueImage
         end
 
+        local SelectAllBarHeight = 22
+        local SelectAllBar, SelectAllButtonBase, UnselectAllButtonBase
+
+        if Dropdown.SelectAllButtons then
+            SelectAllBar = New("Frame", {
+                BackgroundColor3 = "MainColor",
+                Size = UDim2.fromOffset(0, SelectAllBarHeight),
+                Visible = false,
+                ZIndex = 1,
+                Parent = Overlay,
+            })
+
+            New("UIStroke", {
+                Color = "OutlineColor",
+                Parent = SelectAllBar,
+            })
+
+            table.insert(Library.SpecificCorners, New("UICorner", {
+                TopLeftRadius = UDim.new(0, Library.CornerRadius / 2),
+                TopRightRadius = UDim.new(0, Library.CornerRadius / 2),
+                Parent = SelectAllBar,
+            }))
+
+            New("UIListLayout", {
+                FillDirection = Enum.FillDirection.Horizontal,
+                Padding = UDim.new(0, 1),
+                Parent = SelectAllBar,
+            })
+
+            local function CreateSelectAllBarButton(Text)
+                local Base = New("TextButton", {
+                    BackgroundColor3 = "MainColor",
+                    Size = UDim2.new(0.5, -1, 1, 0),
+                    Text = Text,
+                    TextSize = 13,
+                    TextTransparency = 0.4,
+                    ZIndex = 2,
+                    Parent = SelectAllBar,
+                })
+
+                table.insert(Dropdown.Connections, Base.MouseEnter:Connect(function()
+                    TweenService:Create(Base, Library.TweenInfo, { TextTransparency = 0 }):Play()
+                end))
+                table.insert(Dropdown.Connections, Base.MouseLeave:Connect(function()
+                    TweenService:Create(Base, Library.TweenInfo, { TextTransparency = 0.4 }):Play()
+                end))
+
+                return Base
+            end
+
+            UnselectAllButtonBase = CreateSelectAllBarButton("Unselect All")
+            SelectAllButtonBase = CreateSelectAllBarButton("Select All")
+
+            local function UpdateSelectAllBarPosition()
+                SelectAllBar.Size = UDim2.fromOffset(DisplayContainer.AbsoluteSize.X, SelectAllBarHeight)
+                SelectAllBar.Position = UDim2.fromOffset(
+                    math.floor(DisplayContainer.AbsolutePosition.X + 0.5),
+                    math.floor(DisplayContainer.AbsolutePosition.Y + DisplayContainer.AbsoluteSize.Y + 1.5)
+                )
+            end
+
+            table.insert(Dropdown.Connections, DisplayContainer:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
+                if SelectAllBar.Visible then
+                    UpdateSelectAllBarPosition()
+                end
+            end))
+            table.insert(Dropdown.Connections, DisplayContainer:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+                if SelectAllBar.Visible then
+                    UpdateSelectAllBarPosition()
+                end
+            end))
+
+            UnselectAllButtonBase.Activated:Connect(function()
+                Dropdown:SetValue({})
+            end)
+
+            SelectAllButtonBase.Activated:Connect(function()
+                local IsDictionary = not IsSequentialArray(Dropdown.Values)
+                local AllValues = {}
+
+                for Key, RawValue in Dropdown.Values do
+                    local Value = IsDictionary and Key or RawValue
+                    local IsDisabled = table.find(Dropdown.DisabledValues or {}, Value) ~= nil
+                        or (RawValue ~= nil and RawValue ~= Value and table.find(Dropdown.DisabledValues or {}, RawValue) ~= nil)
+
+                    if not IsDisabled then
+                        table.insert(AllValues, Value)
+                    end
+                end
+
+                Dropdown:SetValue(AllValues)
+            end)
+        end
+
         local MenuTable
         MenuTable = Library:AddContextMenu(
             DisplayContainer,
@@ -8322,7 +8418,8 @@ do
                 return UDim2.fromOffset((DisplayContainer.AbsoluteSize.X / Library.DPIScale), 0)
             end,
             function()
-                return { 0.5, DisplayContainer.AbsoluteSize.Y + 1.5 }
+                local ExtraOffset = Dropdown.SelectAllButtons and (SelectAllBarHeight + 1.5) or 0
+                return { 0.5, DisplayContainer.AbsoluteSize.Y + 1.5 + ExtraOffset }
             end,
             2,
             function(Active: boolean)
@@ -8350,6 +8447,21 @@ do
                     MenuCorner.TopRightRadius = Zero
                     MenuCorner.BottomRightRadius = Half
                     MenuCorner.BottomLeftRadius = Half
+                end
+
+                if SelectAllBar then
+                    if Active then
+                        SelectAllBar.Parent = nil
+                        SelectAllBar.Parent = Overlay
+                        SelectAllBar.Visible = true
+                        SelectAllBar.Size = UDim2.fromOffset(DisplayContainer.AbsoluteSize.X, SelectAllBarHeight)
+                        SelectAllBar.Position = UDim2.fromOffset(
+                            math.floor(DisplayContainer.AbsolutePosition.X + 0.5),
+                            math.floor(DisplayContainer.AbsolutePosition.Y + DisplayContainer.AbsoluteSize.Y + 1.5)
+                        )
+                    else
+                        SelectAllBar.Visible = false
+                    end
                 end
             end,
             false,
@@ -9233,6 +9345,10 @@ do
 
             if MenuTable then
                 MenuTable:Destroy()
+            end
+
+            if SelectAllBar then
+                SelectAllBar:Destroy()
             end
 
             if Holder then
