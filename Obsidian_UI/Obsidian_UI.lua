@@ -6225,13 +6225,16 @@ do
         if Text then
             local MaxLabelWidth = (Container.AbsoluteSize.X / Library.DPIScale) - 40
             local TextLabel = New("TextLabel", {
+                AnchorPoint = Vector2.new(0, 0.5),
                 BackgroundTransparency = 1,
+                Position = UDim2.fromScale(0, 0.5),
                 Size = UDim2.new(1, -40, 0, 16),
                 Text = Text,
                 TextSize = 14,
                 TextScaled = true,
                 TextTransparency = 0.5,
                 TextXAlignment = Enum.TextXAlignment.Center,
+                TextYAlignment = Enum.TextYAlignment.Center,
                 Parent = InnerHolder,
             })
             New("UITextSizeConstraint", {
