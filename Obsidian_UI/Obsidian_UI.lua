@@ -14303,6 +14303,13 @@ function Library:CreateWindow(WindowInfo)
             end,
         })
 
+        CreditsSubTab:AddButton({
+            Text = "Copy Rscripts Link",
+            Func = function()
+                copyInfoLink("Rscripts link", "https://rscripts.net/@Project_Cryptic")
+            end,
+        })
+
         local PlayerSubTab = InfoTabbox:AddTab("Player", "user")
 
         PlayerSubTab:AddDivider("Account")
