@@ -254,7 +254,7 @@ local Library = {
     ShowToggleFrameInKeybinds = true,
 
     NotifyOnError = false,
-    ShowCustomCursor = true,
+    ShowCustomCursor = false,
     ForceCheckbox = false,
 
     CantDragForced = false,
@@ -396,7 +396,7 @@ local Templates = {
 
         CornerRadius = 4,
         NotifySide = "Right",
-        ShowCustomCursor = true,
+        ShowCustomCursor = false,
 
         Font = Enum.Font.Code,
         ToggleKeybind = Enum.KeyCode.RightControl,
@@ -6225,9 +6225,9 @@ do
         if Text then
             local MaxLabelWidth = (Container.AbsoluteSize.X / Library.DPIScale) - 40
             local TextLabel = New("TextLabel", {
-                AnchorPoint = Vector2.new(0, 0.5),
+                AnchorPoint = Vector2.new(0.5, 0.5),
                 BackgroundTransparency = 1,
-                Position = UDim2.fromScale(0, 0.5),
+                Position = UDim2.fromScale(0.5, 0.5),
                 Size = UDim2.new(1, -40, 0, 16),
                 Text = Text,
                 TextSize = 14,
