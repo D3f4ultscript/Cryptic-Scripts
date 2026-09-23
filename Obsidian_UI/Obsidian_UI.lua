@@ -6928,6 +6928,7 @@ do
 
         local Button = New("TextButton", {
             Active = not Toggle.Disabled,
+            AutomaticSize = Enum.AutomaticSize.Y,
             BackgroundTransparency = 1,
             Size = UDim2.new(1, 0, 0, 18),
             Text = "",
@@ -6937,12 +6938,15 @@ do
 
         local Label = New("TextLabel", {
             BackgroundTransparency = 1,
+            AutomaticSize = Enum.AutomaticSize.Y,
             Position = UDim2.fromOffset(26, 0),
-            Size = UDim2.new(1, -26, 1, 0),
+            Size = UDim2.new(1, -26, 0, 0),
             Text = Toggle.Text,
             TextSize = 14,
             TextTransparency = 0.4,
+            TextWrapped = true,
             TextXAlignment = Enum.TextXAlignment.Left,
+            TextYAlignment = Enum.TextYAlignment.Top,
             Parent = Button,
         })
 
@@ -6955,8 +6959,7 @@ do
 
         local Checkbox = New("Frame", {
             BackgroundColor3 = "MainColor",
-            Size = UDim2.fromScale(1, 1),
-            SizeConstraint = Enum.SizeConstraint.RelativeYY,
+            Size = UDim2.fromOffset(18, 18),
             Parent = Button,
         })
         table.insert(
@@ -7186,6 +7189,7 @@ do
 
         local Button = New("TextButton", {
             Active = not Toggle.Disabled,
+            AutomaticSize = Enum.AutomaticSize.Y,
             BackgroundTransparency = 1,
             Size = UDim2.new(1, 0, 0, 18),
             Text = "",
@@ -7195,11 +7199,14 @@ do
 
         local Label = New("TextLabel", {
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, -40, 1, 0),
+            AutomaticSize = Enum.AutomaticSize.Y,
+            Size = UDim2.new(1, -40, 0, 0),
             Text = Toggle.Text,
             TextSize = 14,
             TextTransparency = 0.4,
+            TextWrapped = true,
             TextXAlignment = Enum.TextXAlignment.Left,
+            TextYAlignment = Enum.TextYAlignment.Top,
             Parent = Button,
         })
 
