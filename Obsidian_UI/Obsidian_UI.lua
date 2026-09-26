@@ -14427,6 +14427,18 @@ function Library:CreateWindow(WindowInfo)
                 end,
             })
 
+            local DefaultMenuKey = WindowInfo.ToggleKeybind
+            if typeof(DefaultMenuKey) == "EnumItem" then
+                DefaultMenuKey = DefaultMenuKey.Name
+            end
+
+            UtilityGroupBox:AddLabel("Menu Keybind"):AddKeyPicker("MenuKeybind", {
+                Default = tostring(DefaultMenuKey or "RightControl"),
+                NoUI = true,
+                Text = "Menu keybind",
+            })
+            Library.ToggleKeybind = Library.Options.MenuKeybind
+
             UtilityGroupBox:AddDropdown("NotifySideDropdown", {
                 Text = "Notification Side",
                 Values = { "Left", "Right" },
