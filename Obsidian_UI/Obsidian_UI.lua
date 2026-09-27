@@ -14351,6 +14351,11 @@ function Library:CreateWindow(WindowInfo)
             DoesWrap = true,
         })
 
+        PurchaseGroupBox:AddLabel({
+            Text = "Slayers 2 Script: Complete open-source version available for $13. Script will be removed from the Hub after purchase.",
+            DoesWrap = true,
+        })
+
         PurchaseGroupBox:AddButton({
             Text = "Copy Discord Link",
             Func = function()
