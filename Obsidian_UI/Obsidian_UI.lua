@@ -14363,6 +14363,24 @@ function Library:CreateWindow(WindowInfo)
             end,
         })
 
+        local ResellerGroupBox = InfoTab:AddGroupbox({
+            Side = "Right",
+            Name = "Reseller",
+            IconName = "shopping-bag",
+        })
+
+        ResellerGroupBox:AddLabel({
+            Text = "We sell Potassium, cheap AI accounts, and FiveM products.",
+            DoesWrap = true,
+        })
+
+        ResellerGroupBox:AddButton({
+            Text = "Copy Discord Link",
+            Func = function()
+                copyInfoLink("Discord link", "https://discord.gg/QeyYGZvnmk")
+            end,
+        })
+
         local PlayerSubTab = InfoTabbox:AddTab("Player", "user")
 
         PlayerSubTab:AddDivider("Account")
