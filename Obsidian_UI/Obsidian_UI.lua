@@ -14340,6 +14340,19 @@ function Library:CreateWindow(WindowInfo)
             end,
         })
 
+        CreditsSubTab:AddDivider("Purchase Scripts")
+        CreditsSubTab:AddLabel({
+            Text = "You can also purchase scripts from us. Join our Discord for more info - payment methods and everything else will be discussed via DM there.",
+            DoesWrap = true,
+        })
+
+        CreditsSubTab:AddButton({
+            Text = "Copy Discord Link",
+            Func = function()
+                copyInfoLink("Discord link", "https://discord.gg/XDpsSW7Ybs")
+            end,
+        })
+
         local PlayerSubTab = InfoTabbox:AddTab("Player", "user")
 
         PlayerSubTab:AddDivider("Account")
