@@ -14340,13 +14340,18 @@ function Library:CreateWindow(WindowInfo)
             end,
         })
 
-        CreditsSubTab:AddDivider("Purchase Scripts")
-        CreditsSubTab:AddLabel({
+        local PurchaseGroupBox = InfoTab:AddGroupbox({
+            Side = "Right",
+            Name = "Purchase Scripts",
+            IconName = "shopping-cart",
+        })
+
+        PurchaseGroupBox:AddLabel({
             Text = "You can also purchase scripts from us. Join our Discord for more info - payment methods and everything else will be discussed via DM there.",
             DoesWrap = true,
         })
 
-        CreditsSubTab:AddButton({
+        PurchaseGroupBox:AddButton({
             Text = "Copy Discord Link",
             Func = function()
                 copyInfoLink("Discord link", "https://discord.gg/XDpsSW7Ybs")
