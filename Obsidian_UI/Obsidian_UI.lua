@@ -14340,32 +14340,9 @@ function Library:CreateWindow(WindowInfo)
             end,
         })
 
-        local PurchaseGroupBox = InfoTab:AddGroupbox({
-            Side = "Right",
-            Name = "Purchase Scripts",
-            IconName = "shopping-cart",
-        })
-
-        PurchaseGroupBox:AddLabel({
-            Text = "You can also purchase scripts from us. Join our Discord for more info - payment methods and everything else will be discussed via DM there.",
-            DoesWrap = true,
-        })
-
-        PurchaseGroupBox:AddLabel({
-            Text = "Slayers 2 Script: Complete open-source version available for $13. Script will be removed from the Hub after purchase.",
-            DoesWrap = true,
-        })
-
-        PurchaseGroupBox:AddButton({
-            Text = "Copy Discord Link",
-            Func = function()
-                copyInfoLink("Discord link", "https://discord.gg/XDpsSW7Ybs")
-            end,
-        })
-
         local ResellerGroupBox = InfoTab:AddGroupbox({
             Side = "Right",
-            Name = "Reseller",
+            Name = "Reseller Ad",
             IconName = "shopping-bag",
         })
 
