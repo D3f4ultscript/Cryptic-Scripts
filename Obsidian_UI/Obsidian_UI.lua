@@ -11858,6 +11858,42 @@ function Library:CreateWindow(WindowInfo)
                     Parent = TabRight,
                 })
             end
+
+            if Library.IsMobile then
+                local function AddScrollHint(Scroller, CenterX)
+                    local Hint = New("TextLabel", {
+                        AnchorPoint = Vector2.new(0.5, 1),
+                        AutomaticSize = Enum.AutomaticSize.X,
+                        BackgroundColor3 = "MainColor",
+                        BackgroundTransparency = 0.25,
+                        Position = UDim2.new(CenterX, 0, 1, -4),
+                        Size = UDim2.fromOffset(0, 18),
+                        Text = "  ▼ Scroll ▼  ",
+                        TextSize = 13,
+                        TextTransparency = 0.2,
+                        Visible = false,
+                        ZIndex = 20,
+                        Parent = TabContainer,
+                    })
+                    New("UICorner", {
+                        CornerRadius = UDim.new(0, 9),
+                        Parent = Hint,
+                    })
+
+                    local function Update()
+                        local MaxScroll = Scroller.AbsoluteCanvasSize.Y - Scroller.AbsoluteWindowSize.Y
+                        Hint.Visible = MaxScroll > 8 and Scroller.CanvasPosition.Y < MaxScroll - 8
+                    end
+
+                    Library:GiveSignal(Scroller:GetPropertyChangedSignal("AbsoluteCanvasSize"):Connect(Update))
+                    Library:GiveSignal(Scroller:GetPropertyChangedSignal("AbsoluteWindowSize"):Connect(Update))
+                    Library:GiveSignal(Scroller:GetPropertyChangedSignal("CanvasPosition"):Connect(Update))
+                    Update()
+                end
+
+                AddScrollHint(TabLeft, 0.25)
+                AddScrollHint(TabRight, 0.75)
+            end
         end
 
         --// Tab Table \\--
