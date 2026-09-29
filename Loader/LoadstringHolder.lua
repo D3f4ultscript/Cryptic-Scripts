@@ -8,5 +8,5 @@ return {
     [354554209] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/SkyWars.lua",
     [10563114921] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/Steal_an_Egg.lua",
     [10765203500] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/Larping_Legends_2.lua",
-    [5595353122] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Scripts/Slayers_2.lua"
+    [5595353122] = "https://raw.githubusercontent.com/D3f4ultscript/Cryptic-Scripts/refs/heads/main/Detected.lua"
 }
